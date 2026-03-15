@@ -1,0 +1,1 @@
+{"version":3,"file":"fetchPrompt.d.ts","sourceRoot":"","sources":["../src/fetchPrompt.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,MAAM,WAAW,cAAc;IAC7B,IAAI,EAAE,MAAM,CAAC;IACb,OAAO,EAAE,MAAM,CAAC;CACjB;AAOD;;;;;;;;;;;;GAYG;AACH,wBAAsB,WAAW,CAAC,IAAI,EAAE,MAAM,GAAG,OAAO,CAAC,cAAc,CAAC,CAcvE"}
