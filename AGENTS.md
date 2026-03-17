@@ -34,9 +34,30 @@ promptodex/
 
 ## Key Functions
 
-- `pod(slug, variables)` - Main API, fetches and renders
-- `fetchPrompt(slug)` - Fetches raw prompt from API
+- `pod(slug, variables, options)` - Main API, fetches and renders
+  - Supports versioned slugs: `my-prompt@1`, `my-prompt@2`
+  - Supports API keys for private prompts: `{ apiKey: "POD_live_XXXXXXX" }`
+- `fetchPrompt(slug, options)` - Fetches raw prompt from API
+  - Same version and API key support as `pod()`
 - `renderPrompt(template, variables)` - Renders `{{variable}}` templates
+
+## API Features
+
+### Versioning
+
+Slug format supports `@version` suffix:
+- `my-prompt` - Latest version
+- `my-prompt@1` - Version 1
+- `my-prompt@2` - Version 2
+
+### Private Prompts
+
+Use `apiKey` option to access private prompts:
+```typescript
+await pod("private-prompt", { name: "Matt" }, { apiKey: "POD_live_XXXXXXX" });
+```
+
+The API key is sent via `Authorization: Bearer POD_live_XXXXXXX` header.
 
 ## Testing
 

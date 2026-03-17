@@ -76,4 +76,85 @@ describe("pod", () => {
       /Prompt not found: unknown-slug/
     );
   });
+
+  it("should support versioned slugs with @version suffix", async () => {
+    const mockResponse = {
+      slug: "make-a-soul@2",
+      content: "Version 2: Create a soul named {{name}}",
+    };
+
+    let calledUrl = "";
+    globalThis.fetch = mock.fn(async (url: string) => {
+      calledUrl = url;
+      return {
+        ok: true,
+        status: 200,
+        json: async () => mockResponse,
+      };
+    }) as unknown as typeof fetch;
+
+    const result = await pod("make-a-soul@2", { name: "Matt" });
+
+    assert.strictEqual(result, "Version 2: Create a soul named Matt");
+    assert.ok(calledUrl.includes("make-a-soul%402"));
+  });
+
+  it("should pass apiKey to fetch as Authorization header", async () => {
+    const mockResponse = {
+      slug: "private-prompt",
+      content: "Private: Hello {{name}}",
+    };
+
+    let capturedHeaders: HeadersInit | undefined;
+    globalThis.fetch = mock.fn(async (_url: string, options?: RequestInit) => {
+      capturedHeaders = options?.headers;
+      return {
+        ok: true,
+        status: 200,
+        json: async () => mockResponse,
+      };
+    }) as unknown as typeof fetch;
+
+    const result = await pod(
+      "private-prompt",
+      { name: "Matt" },
+      { apiKey: "POD_live_xyz789" }
+    );
+
+    assert.strictEqual(result, "Private: Hello Matt");
+    assert.deepStrictEqual(capturedHeaders, {
+      Authorization: "Bearer POD_live_xyz789",
+    });
+  });
+
+  it("should work with versioned private prompts", async () => {
+    const mockResponse = {
+      slug: "private-prompt@1",
+      content: "Private V1: {{message}}",
+    };
+
+    let calledUrl = "";
+    let capturedHeaders: HeadersInit | undefined;
+    globalThis.fetch = mock.fn(async (url: string, options?: RequestInit) => {
+      calledUrl = url;
+      capturedHeaders = options?.headers;
+      return {
+        ok: true,
+        status: 200,
+        json: async () => mockResponse,
+      };
+    }) as unknown as typeof fetch;
+
+    const result = await pod(
+      "private-prompt@1",
+      { message: "Hello" },
+      { apiKey: "POD_live_secret" }
+    );
+
+    assert.strictEqual(result, "Private V1: Hello");
+    assert.ok(calledUrl.includes("private-prompt%401"));
+    assert.deepStrictEqual(capturedHeaders, {
+      Authorization: "Bearer POD_live_secret",
+    });
+  });
 });
