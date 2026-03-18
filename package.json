@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "node --test --experimental-strip-types src/**/*.test.ts",
+    "test": "node --test --import tsx src/**/*.test.ts",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -32,6 +32,7 @@
     "node": ">=18"
   },
   "devDependencies": {
+    "tsx": "^4.21.0",
     "typescript": "^5.4.0"
   }
 }
