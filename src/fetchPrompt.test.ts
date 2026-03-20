@@ -87,7 +87,8 @@ describe("fetchPrompt", () => {
     const result = await fetchPrompt("make-a-soul@1");
 
     assert.deepStrictEqual(result, mockResponse);
-    assert.ok(calledUrl.includes("make-a-soul%401"));
+    // URL should be /prompts/make-a-soul/1 (not /prompts/make-a-soul@1)
+    assert.ok(calledUrl.includes("make-a-soul/1"), `Expected URL to contain 'make-a-soul/1', got: ${calledUrl}`);
   });
 
   it("should include Authorization header when apiKey is provided", async () => {

@@ -23,6 +23,22 @@ export interface FetchOptions {
 const API_BASE = "https://promptodex.com/api/v1/prompts";
 
 /**
+ * Parse a slug to extract name and version
+ * @example parseSlugInternal("my-prompt@2") => { name: "my-prompt", version: "2" }
+ * @example parseSlugInternal("my-prompt") => { name: "my-prompt", version: null }
+ */
+function parseSlugInternal(slug: string): { name: string; version: string | null } {
+  const atIndex = slug.lastIndexOf("@");
+  if (atIndex === -1 || atIndex === 0) {
+    return { name: slug, version: null };
+  }
+  return {
+    name: slug.substring(0, atIndex),
+    version: slug.substring(atIndex + 1),
+  };
+}
+
+/**
  * Fetches a prompt from the Promptodex registry by slug.
  *
  * Supports versioned prompts using the @version suffix (e.g., "my-prompt@1").
@@ -48,7 +64,12 @@ const API_BASE = "https://promptodex.com/api/v1/prompts";
  * ```
  */
 export async function fetchPrompt(slug: string, options: FetchOptions = {}): Promise<PromptResponse> {
-  const url = `${API_BASE}/${encodeURIComponent(slug)}`;
+  const { name, version } = parseSlugInternal(slug);
+  
+  // Build URL: /prompts/{name} or /prompts/{name}/{version}
+  const url = version
+    ? `${API_BASE}/${encodeURIComponent(name)}/${encodeURIComponent(version)}`
+    : `${API_BASE}/${encodeURIComponent(name)}`;
 
   const headers: Record<string, string> = {};
   if (options.apiKey) {

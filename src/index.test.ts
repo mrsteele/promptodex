@@ -98,7 +98,8 @@ describe("pod", () => {
     const result = await pod("make-a-soul@2", { name: "Matt" });
 
     assert.strictEqual(result, "Version 2: Create a soul named Matt");
-    assert.ok(calledUrl.includes("make-a-soul%402"));
+    // URL should be /prompts/make-a-soul/2 (not /prompts/make-a-soul@2)
+    assert.ok(calledUrl.includes("make-a-soul/2"), `Expected URL to contain 'make-a-soul/2', got: ${calledUrl}`);
   });
 
   it("should pass apiKey to fetch as Authorization header", async () => {
@@ -154,7 +155,8 @@ describe("pod", () => {
     );
 
     assert.strictEqual(result, "Private V1: Hello");
-    assert.ok(calledUrl.includes("private-prompt%401"));
+    // URL should be /prompts/private-prompt/1 (not /prompts/private-prompt@1)
+    assert.ok(calledUrl.includes("private-prompt/1"), `Expected URL to contain 'private-prompt/1', got: ${calledUrl}`);
     assert.deepStrictEqual(capturedHeaders, {
       Authorization: "Bearer POD_live_secret",
     });
@@ -241,8 +243,8 @@ describe("pod caching", () => {
     const result = await pod("config-prompt", { message: "Hello" });
 
     assert.strictEqual(result, "Version 3: Hello");
-    // Should have fetched with version from config
-    assert.ok(calledUrl.includes("config-prompt%403"));
+    // Should have fetched with version from config: /prompts/config-prompt/3
+    assert.ok(calledUrl.includes("config-prompt/3"), `Expected URL to contain 'config-prompt/3', got: ${calledUrl}`);
   });
 
   it("should skip cache when skipCache option is true", async () => {
