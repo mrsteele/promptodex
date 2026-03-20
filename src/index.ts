@@ -1,26 +1,26 @@
-export { fetchPrompt } from "./fetchPrompt.ts";
-export type { PromptResponse, FetchOptions } from "./fetchPrompt.ts";
-export { renderPrompt } from "./renderPrompt.ts";
-export type { Variables } from "./renderPrompt.ts";
+export { fetchPrompt } from "./fetchPrompt.js";
+export type { PromptResponse, FetchOptions } from "./fetchPrompt.js";
+export { renderPrompt } from "./renderPrompt.js";
+export type { Variables } from "./renderPrompt.js";
 export {
   parseSlug,
   getConfiguredVersion,
   readCache,
   writeCache,
   getProjectRoot,
-} from "./cache.ts";
-export type { PromptoConfig } from "./cache.ts";
+} from "./cache.js";
+export type { PromptoConfig } from "./cache.js";
 
-import { fetchPrompt } from "./fetchPrompt.ts";
-import type { FetchOptions, PromptResponse } from "./fetchPrompt.ts";
-import { renderPrompt } from "./renderPrompt.ts";
-import type { Variables } from "./renderPrompt.ts";
+import { fetchPrompt } from "./fetchPrompt.js";
+import type { FetchOptions, PromptResponse } from "./fetchPrompt.js";
+import { renderPrompt } from "./renderPrompt.js";
+import type { Variables } from "./renderPrompt.js";
 import {
   parseSlug,
   getConfiguredVersion,
   readCache,
   writeCache,
-} from "./cache.ts";
+} from "./cache.js";
 
 /**
  * Options for the pod function

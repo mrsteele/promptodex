@@ -1,7 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-import type { PromptResponse } from "./fetchPrompt.ts";
+import { dirname, join } from "node:path";
+import type { PromptResponse } from "./fetchPrompt.js";
 
 /**
  * Structure of the promptodex.json configuration file
@@ -11,37 +10,11 @@ export interface PromptoConfig {
 }
 
 /**
- * Get the project root directory (where node_modules lives).
- * This module is installed at node_modules/promptodex/dist/,
- * so we need to traverse up to find the project root.
+ * Get the project root directory (where node_modules and .promptodex live).
+ * Uses process.cwd() which is the directory from which the Node.js process was launched.
+ * This is typically the user's project root.
  */
 export function getProjectRoot(): string {
-  // Get the directory of this file
-  const currentDir = dirname(fileURLToPath(import.meta.url));
-
-  // Traverse up to find node_modules, then get its parent
-  let dir = currentDir;
-  while (dir !== "/" && dir !== dirname(dir)) {
-    const parentName = dirname(dir);
-    if (dir.endsWith("node_modules/promptodex/dist")) {
-      // We're at node_modules/promptodex/dist, go up 3 levels
-      return resolve(dir, "../../..");
-    }
-    if (dir.endsWith("node_modules/promptodex")) {
-      // We're at node_modules/promptodex, go up 2 levels
-      return resolve(dir, "../..");
-    }
-    // Check if current directory's parent is node_modules
-    const parts = dir.split("/");
-    const nodeModulesIndex = parts.lastIndexOf("node_modules");
-    if (nodeModulesIndex !== -1) {
-      // Return the directory containing node_modules
-      return parts.slice(0, nodeModulesIndex).join("/") || "/";
-    }
-    dir = dirname(dir);
-  }
-
-  // Fallback: use current working directory
   return process.cwd();
 }
 
