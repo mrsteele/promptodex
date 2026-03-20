@@ -8,7 +8,7 @@ This file provides guidance for AI agents working with this codebase.
 
 When working on this project:
 
-1. **Stay current with the Promptodex API** - The library fetches from `https://promptodex.com/api/v1/prompts/{slug}`. If the API changes, update `fetchPrompt.ts` accordingly.
+1. **Stay current with the Promptodex API** - The library fetches from `https://promptodex.com/api/v1/prompts/{slug}`. Specific versions are in the subdirectory (i.e. `https://promptodex.com/api/v1/prompts/{slug}/{version}`). If the API changes, update `fetchPrompt.ts` accordingly.
 
 2. **Maintain TypeScript types** - Ensure all exports have proper TypeScript types. Update type definitions when adding new features.
 
